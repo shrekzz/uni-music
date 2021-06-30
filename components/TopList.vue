@@ -62,7 +62,7 @@
 			padding: 20rpx;
 
 			.track-text {
-				color: #111;
+				color: #666666;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;

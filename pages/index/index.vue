@@ -1,8 +1,8 @@
 <template>
-	<view class="index-wrapper">
+	<view class="index-wrapper" >
 		<user />
-		<view class="search">
-			
+		<view @click="toSearch">
+			<search />
 		</view>
 		<top-list :list="toplist" />
 	</view>
@@ -11,12 +11,14 @@
 <script>
 	import { myRequest } from "../../api.js";
 	import TopList from "../../components/TopList";
-	import User from "../../components/User"
+	import User from "../../components/User";
+	import Search from "../../components/Search.vue"
 	
 	export default {
 		components:{
 			TopList,
-			User
+			User,
+			Search
 		},
 		data() {
 			return {
@@ -31,14 +33,20 @@
 			})
 		},
 		methods: {
-			
+			toSearch() {
+				uni.navigateTo({
+					url: "../SearchPage/SearchPage",
+					animationType: "pop-in"
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
 	.index-wrapper{
-		padding: 20rpx;
+		padding: 20rpx 40rpx;
+		
 		
 	}
 	
