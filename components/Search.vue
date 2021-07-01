@@ -9,6 +9,7 @@
 				<text class="res-song">{{ item.name }}</text>
 			</view>
 		</view>
+		
 	</view>
 </template>
 
@@ -16,13 +17,20 @@
 	import {
 		myRequest
 	} from "../api.js";
+	import HotList from "./HotList"
+	import HistoryList from "./HistoryList"
 	export default {
 		name: "Search",
 		data() {
 			return {
 				keywords: "",
-				searchRes: []
+				searchRes: [],
+				hot: false
 			};
+		},
+		components: {
+			HotList,
+			HistoryList
 		},
 		methods: {
 			handleInput() {
@@ -52,6 +60,9 @@
 			keywords(newValue) {
 				if (newValue == "") {
 					this.searchRes = []
+					this.hot = true
+				} else {
+					this.hot = false
 				}
 			}
 		}
