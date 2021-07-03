@@ -1,5 +1,5 @@
 <template>
-	<view class="index-wrapper" >
+	<view class="index-wrapper">
 		<user />
 		<view @click="toSearch">
 			<search />
@@ -9,13 +9,15 @@
 </template>
 
 <script>
-	import { myRequest } from "../../api.js";
+	import {
+		myRequest
+	} from "../../api.js";
 	import TopList from "../../components/TopList";
 	import User from "../../components/User";
 	import Search from "../../components/Search.vue"
-	
+
 	export default {
-		components:{
+		components: {
 			TopList,
 			User,
 			Search
@@ -26,8 +28,10 @@
 			}
 		},
 		onLoad() {
-			myRequest({url:"/toplist/detail"}).then(res => {
-				const list = res.data.list.slice(0,4)
+			myRequest({
+				url: "/toplist/detail"
+			}).then(res => {
+				const list = res.data.list.slice(0, 4)
 				this.toplist = list
 				console.log(list)
 			})
@@ -44,11 +48,9 @@
 </script>
 
 <style lang="scss">
-	.index-wrapper{
+	.index-wrapper {
 		padding: 20rpx 40rpx;
-		
-		
+
+
 	}
-	
-	
 </style>
