@@ -2,18 +2,44 @@
 	<view class="search">
 		<view class="search-box">
 			<view class="search-icon"></view>
-			<input class="search-input" type="text" value="" placeholder="搜索歌曲" v-model="keywords" @input="handleInput" />
-			<view class="close-icon" v-show="keywords !== ''" @click="cleanKeywords">
+			<input
+				class="search-input"
+				type="text" value=""
+				placeholder="搜索歌曲"
+				v-model.trim="keywords"
+				@input="handleInput"
+			/>
+			<view class="close-icon" v-show="cleanBtn" @click="cleanKeywords">
 			</view>
 		</view>
-		<view class="search-tips" v-if="keywords">搜索“{{ keywords }}”</view>
-		<view class="search-result" v-show="resLen !== 0">
-			<view class="search-result-list" v-for="item of searchRes" :key="item.id">
+		<history-list
+			v-if="historyLen !== 0 && keywords == ''"
+			:list="historyList"
+			@deleteHis="deleteHistory"
+		/>
+		<view
+			class="search-tips"
+			v-if="keywords"
+			@click="search(keywords)"
+		>
+			搜索“{{ keywords }}”
+		</view>
+		<view class="match-result" v-show="matchLen !== 0">
+			<view
+				class="match-result-list"
+				v-for="(item, index) of allMatch"
+				:key="index"
+				@click="search(item.keyword)"
+			>
 				<view class="res-icon"></view>
-				<view class="res-song">{{ item.name }}</view>
+				<view class="res-song">{{ item.keyword }}</view>
 			</view>
 		</view>
-		
+		<hot-list v-show="fisrtSearch && keywords == '' || historyLen !== 0"></hot-list>
+		<search-result
+			v-if="showResult"
+			:searchResult="searchResult"
+		></search-result>
 	</view>
 </template>
 
@@ -23,54 +49,102 @@
 	} from "../api.js";
 	import HotList from "./HotList"
 	import HistoryList from "./HistoryList"
+	import SearchResult from "./SearchResult"
 	export default {
 		name: "Search",
 		data() {
 			return {
 				keywords: "",
-				searchRes: [],
+				allMatch: [],
+				cleanBtn: false,
 				fisrtSearch: false,
-				hot: false
+				hot: false,
+				historyList: ["sa","Dsda","sadasd","dasdasdsa","dsdas"],
+				showResult: false,
+				searchResult: {
+					keyword: "",
+					resultList: []
+				}
 			};
 		},
 		components: {
 			HotList,
-			HistoryList
+			HistoryList,
+			SearchResult
 		},
 		methods: {
 			handleInput() {
 				if (this.keywords.length !== 0) {
 					myRequest({
-						url: "/cloudsearch",
+						url: "/search/suggest",
 						data: {
 							keywords: this.keywords,
-							limit: 6
+							type: "mobile"
 						}
 					}).then(
 						(res, err) => {
-							const songs = res.data.result.songs;
-							this.searchRes = songs;
+							if (res.data.result.allMatch) {
+								this.allMatch = res.data.result.allMatch;
+							} else {
+								this.allMatch = [];
+							}
 						}
 					);
 					this.fisrtSearch = true;
 				}
 			},
 			cleanKeywords() {
-				this.keywords = ""
+				this.cleanBtn = false;
+				this.allMatch = [];
+				this.keywords = "";
+				this.showResult = false;
+			},
+			search(key) {
+				if (!this.historyList.includes(key)) {
+					this.historyList.push(key);
+				}
+				console.log(key)
+				myRequest({
+					url: "/cloudsearch",
+					data: {
+						keywords: key,
+						limit: 30
+					}
+				}).then(
+					(res, err) => {
+						this.searchResult = {
+							keyword: key,
+							resultList: res.data.result.songs
+						}
+						console.log(res.data)
+						this.showResult = true;
+					}
+				);
+				
+				
+			},
+			deleteHistory() {
+				this.historyList =[];
 			}
 		},
 		computed: {
-			resLen() {
-				return this.searchRes.length
+			matchLen() {
+				return this.allMatch.length;
+			},
+			historyLen() {
+				return this.historyList.length;
 			}
 		},
 		watch: {
 			keywords(newValue) {
 				if (newValue == "") {
-					this.searchRes = []
-					this.hot = true
+					this.allMatch = [];
+					this.hot = true;
+					this.cleanBtn = false;
+					this.showResult = false;
 				} else {
-					this.hot = false
+					this.hot = false;
+					this.cleanBtn = true;
 				}
 			}
 		}
@@ -106,14 +180,14 @@
 			
 			.close-icon{
 				position: absolute;
-				right: 20rpx;
-				top: 20rpx;
+				right: 26rpx;
+				top: 26rpx;
 				color: #999999;
-				width: 40rpx;
-				height: 40rpx;
+				width: 28rpx;
+				height: 28rpx;
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
-				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAyOCI+PGcgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjYmNiZGJkIiBkPSJNMTQgMGM3LjczMiAwIDE0IDYuMjY4IDE0IDE0cy02LjI2OCAxNC0xNCAxNFMwIDIxLjczMiAwIDE0IDYuMjY4IDAgMTQgMHoiLz48cGF0aCBkPSJNMTkgOUw5IDE5TTkgOWwxMCAxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWJlY2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIi8+PC9nPjwvc3ZnPg==");		
+				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjOTk5ODk5IiBkPSJNMTMuMzc5IDEybDEwLjMzOCAxMC4zMzdhLjk3NS45NzUgMCAxIDEtMS4zNzggMS4zNzlMMTIuMDAxIDEzLjM3OCAxLjY2MyAyMy43MTZhLjk3NC45NzQgMCAxIDEtMS4zNzgtMS4zNzlMMTAuNjIzIDEyIC4yODUgMS42NjJBLjk3NC45NzQgMCAxIDEgMS42NjMuMjg0bDEwLjMzOCAxMC4zMzhMMjIuMzM5LjI4NGEuOTc0Ljk3NCAwIDEgMSAxLjM3OCAxLjM3OEwxMy4zNzkgMTIiLz48L3N2Zz4=");
 			}
 		}
 		
@@ -121,9 +195,9 @@
 			color: #507DAF;
 			margin:44rpx 20rpx 44rpx 22rpx;
 		}
-		.search-result {
+		.match-result {
 			font-size: 30rpx;
-			.search-result-list {
+			.match-result-list {
 				padding: 20rpx;
 				margin: 20rpx 0;
 				color: #8E8E8E;
