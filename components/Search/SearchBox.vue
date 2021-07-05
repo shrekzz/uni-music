@@ -4,148 +4,36 @@
 			<view class="search-icon"></view>
 			<input
 				class="search-input"
-				type="text" value=""
+				type="text" 
 				placeholder="搜索歌曲"
 				v-model.trim="keywords"
 				@input="handleInput"
+				@confirm="handleInput"
 			/>
 			<view class="close-icon" v-show="cleanBtn" @click="cleanKeywords">
 			</view>
 		</view>
-		<history-list
-			v-if="historyLen !== 0 && keywords == ''"
-			:list="historyList"
-			@deleteHis="deleteHistory"
-		/>
-		<view
-			class="search-tips"
-			v-if="keywords"
-			@click="search(keywords)"
-		>
-			搜索“{{ keywords }}”
-		</view>
-		<view class="match-result" v-show="matchLen !== 0">
-			<view
-				class="match-result-list"
-				v-for="(item, index) of allMatch"
-				:key="index"
-				@click="search(item.keyword)"
-			>
-				<view class="res-icon"></view>
-				<view class="res-song">{{ item.keyword }}</view>
-			</view>
-		</view>
-		<hot-list v-show="fisrtSearch && keywords == '' || historyLen !== 0"></hot-list>
-		<!-- <search-result
-			v-if="showResult"
-			:searchResult="searchResult"
-		></search-result> -->
 	</view>
 </template>
 
 <script>
-	import {
-		myRequest
-	} from "../api.js";
-	import HotList from "./HotList"
-	import HistoryList from "./HistoryList"
-	//import SearchResult from "./SearchResult"
 	export default {
-		name: "Search",
+		name: "SearchBox",
 		data() {
 			return {
 				keywords: "",
-				allMatch: [],
-				cleanBtn: false,
-				fisrtSearch: false,
-				hot: false,
-				historyList: ["sa","Dsda","sadasd","dasdasdsa","dsdas"],
-				showResult: false,
-				searchResult: {
-					keyword: "",
-					resultList: []
-				}
-			};
-		},
-		components: {
-			HotList,
-			HistoryList,
-			//SearchResult
+				cleanBtn: false
+			}
 		},
 		methods: {
 			handleInput() {
-				if (this.keywords.length !== 0) {
-					myRequest({
-						url: "/search/suggest",
-						data: {
-							keywords: this.keywords,
-							type: "mobile"
-						}
-					}).then(
-						(res, err) => {
-							if (res.data.result.allMatch) {
-								this.allMatch = res.data.result.allMatch;
-							} else {
-								this.allMatch = [];
-							}
-						}
-					);
-					this.fisrtSearch = true;
-				}
+				this.cleanBtn = this.keywords == "" ?  false : true;
+				this.$emit("handleInput", this.keywords);
 			},
 			cleanKeywords() {
-				this.cleanBtn = false;
-				this.allMatch = [];
 				this.keywords = "";
-				this.showResult = false;
-			},
-			search(key) {
-				if (!this.historyList.includes(key)) {
-					this.historyList.push(key);
-				}
-				console.log(key)
-				myRequest({
-					url: "/cloudsearch",
-					data: {
-						keywords: key,
-						limit: 30
-					}
-				}).then(
-					(res, err) => {
-						this.searchResult = {
-							keyword: key,
-							resultList: res.data.result.songs
-						}
-						console.log(res.data)
-						this.showResult = true;
-					}
-				);
-				
-				
-			},
-			deleteHistory() {
-				this.historyList =[];
-			}
-		},
-		computed: {
-			matchLen() {
-				return this.allMatch.length;
-			},
-			historyLen() {
-				return this.historyList.length;
-			}
-		},
-		watch: {
-			keywords(newValue) {
-				if (newValue == "") {
-					this.allMatch = [];
-					this.hot = true;
-					this.cleanBtn = false;
-					this.showResult = false;
-				} else {
-					this.hot = false;
-					this.cleanBtn = true;
-				}
+				this.cleanBtn = false;
+				this.handleInput()
 			}
 		}
 	}

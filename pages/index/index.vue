@@ -2,7 +2,7 @@
 	<view class="index-wrapper">
 		<user />
 		<view @click="toSearch">
-			<search />
+			<search-box />
 		</view>
 		<top-list :list="toplist" />
 	</view>
@@ -14,13 +14,13 @@
 	} from "../../api.js";
 	import TopList from "../../components/TopList";
 	import User from "../../components/User";
-	import Search from "../../components/Search.vue"
+	import SearchBox from "../../components/Search/SearchBox"
 
 	export default {
 		components: {
 			TopList,
 			User,
-			Search
+			SearchBox
 		},
 		data() {
 			return {

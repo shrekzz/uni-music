@@ -9,11 +9,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view
-				class="list"
-				v-for="(item, index) of list"
-				@click="search(item)"
-			>
+			<view class="list" v-for="(item, index) of searchHistory" >
 				{{ item }}
 			</view>
 		</view>
@@ -21,6 +17,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	export default {
 		name:"HistoryList",
 		props: {
@@ -34,10 +31,10 @@
 		methods: {
 			deleteHis() {
 				this.$emit("deleteHis");
-			},
-			search(key) {
-				this.$emit("search", key);
 			}
+		},
+		computed: {
+			...mapState(["searchHistory"])
 		}
 	}
 </script>
