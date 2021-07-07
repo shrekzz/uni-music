@@ -2,14 +2,16 @@
 	<view class="search-wrapper">
 		<search-box
 			@handleInput="getKeywords"
+			ref="searchbox"
 		/>
 		<match-list
+			v-show="showRecommend"
 			:matchList="matchList"
 			:keywords="keywords"
 			@search="search"
 		/>
 		<hot-list v-show="showHot" />
-		<search-result :searchResult="searchResult"></search-result>
+		<search-result v-show="showResult" :searchResult="searchResult"></search-result>
 	</view>
 </template>
 
@@ -28,6 +30,7 @@
 				matchList: [],
 				// 是否显示热搜
 				showHot: false,
+				showRecommend: false,
 				// 是否显示搜索结果
 				showResult: false,
 				//关键字和搜索结果
@@ -39,8 +42,10 @@
 		},
 		methods: {
 			getKeywords(keywords) {
+				console.log('FATHER'+keywords)
 				this.keywords = keywords;
 				this.showHot = false;
+				this.showRecommend = true;
 				if (keywords.length !== 0) {
 					this.$MyRequest({
 						url: "/search/suggest",
@@ -57,10 +62,16 @@
 							}
 						}
 					);
+				} else{
+					this.showHot = true;
 				}
 			},
 			...mapMutations(["handleHistory"]),
 			search(key) {
+				if(key !== this.keywords) {
+					// 使关键字与搜索框里的一致
+					this.$refs.searchbox.keywords = key
+				}
 				this.handleHistory(key);
 				this.$MyRequest({
 					url: "/cloudsearch",
@@ -74,8 +85,9 @@
 							keyword: key,
 							resultList: res.data.result.songs
 						}
-						console.log(res.data)
+						this.showHot = false;
 						this.showResult = true;
+						this.showRecommend = false;
 					}
 				);
 			}
@@ -99,7 +111,16 @@
 					};
 					this.showResult = false;
 				} else {
-					
+					this.showRecommend = true
+				}
+			}
+		},
+		provide() {
+			// 注入search方法
+			let _this = this
+			return {
+				Search(key) {
+					_this.search(key)
 				}
 			}
 		}
