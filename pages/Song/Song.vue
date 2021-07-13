@@ -5,17 +5,21 @@
 			<view class="logo">
 				
 			</view>
-			<image class="vinyl-neddle" src="../../static/images/needle.png" mode="widthFix"></image>
+			<image class="vinyl-neddle" src="../../static/images/needle.png" ></image>
 		</view>
 		<!-- 中间轮盘 -->
 		<view class="vinyl-turntable">
-			<image class="vinyl-mask" :src="picUrl" mode="widthFix"></image>
-			<image class="vinyl-bottom" src="../../static/images/vinyl.png" mode="widthFix"></image>
+			<image class="vinyl-mask" :src="picUrl" ></image>
+			<image class="vinyl-bottom" src="../../static/images/vinyl.png" ></image>
 		</view>
 		
-		<view class="scroll-view">
-			<view v-for="item in showLrc" class="">
-				<view v-html="item"></view>
+		<view class="scroll-view" >
+			<view  class="lyrics-main">
+				<view class="lyrics-scroll"  >
+					<view class="lyric-wrap" ref="lyrics">
+						<view v-for="item in showLrc" class="lyric-item" v-html="item"></view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 播放按钮 -->
@@ -23,7 +27,7 @@
 			<view class="play-btn-play" v-if="play"></view>
 			<view class="play-btn-pause" v-else ></view>
 		</view>
-		<audio :src="url" />
+		
 	</view>
 </template>
 
@@ -41,7 +45,8 @@
 				lrc: [],
 				showLrc: [],
 				// 歌曲地址
-				url: ""
+				url: "",
+				lineNo: 0
 			}
 		},
 		methods: {
@@ -73,8 +78,15 @@
 							if(item) {
 								let lrcTime = /\[(.+?)\]/g.exec(item)[1].split(":")
 								lrcTime = Number(lrcTime[0])*60+Number(lrcTime[1]);
+								// 去掉时间 eg:[01:23.33]
 								let word = /(?<=]).*/.exec(item)[0]
-								handleLrc.push({ [lrcTime]: word})
+								// 空歌词不要
+								if(word.length !== 0) {
+									handleLrc.push({t: lrcTime, w: word })
+									this.showLrc.push(word);
+								}
+								
+								
 							}
 						})
 						this.lrc = handleLrc;
@@ -106,6 +118,7 @@
 				// })
 				this.$innerAudioContext.onEnded(() => {
 					this.play = false;
+					this.lineNo = 0;
 				})
 				this.lyricScroll();
 			},
@@ -123,9 +136,33 @@
 			// 歌词滚动
 			lyricScroll() {
 				this.$innerAudioContext.onTimeUpdate(() => {
-					let time = this.$innerAudioContext.currentTime
-					
-					console.log(this.$innerAudioContext.currentTime)
+					let lineNo = this.lineNo
+					if(lineNo==this.lrc.length)
+						return;
+					var curTime = this.$innerAudioContext.currentTime; //播放器时间
+					if(this.lrc[lineNo].t<=curTime){
+						// this.showLrc = [this.lrc[lineNo-1]?this.lrc[lineNo-1].w:"",this.lrc[lineNo].w,this.lrc[lineNo+1].w]\
+						// set 方法才能监听到数组变化
+						this.$set(this.showLrc, lineNo, "<div class='focus'>"+this.showLrc[lineNo] +"</div>")
+						
+						if(lineNo>0) {
+							 //console.log(this.$refs.lyrics.$el)
+							// 正则去掉样式
+							let pre = this.showLrc[lineNo-1].replace(/<\/?.+?\/?>/g,"")
+							this.$set(this.showLrc, lineNo-1, pre)
+						}
+						if(lineNo > 1) {
+							this.$nextTick(() => {
+								this.$refs.lyrics.$el.scrollTop+=40
+								console.log(this.$refs.lyrics.$el.scrollTop)
+							})
+						}
+						
+						
+						
+						this.lineNo++;
+						
+					}
 				})
 				
 				// let start = 3;
@@ -227,7 +264,36 @@
 		position: relative;
 		overflow-x: hidden;
 		overflow-y: auto;
-	
+		.lyrics-main {
+			box-sizing: border-box;
+			padding-top: 62.505rpx;
+			padding-bottom: 83.34rpx;
+			text-align: center;
+			font-size: 29.169rpx;
+			.lyrics-scroll {
+				position: relative;
+				height: 120PX;
+				color: #fff;
+				.lyric-wrap {
+					overflow: auto;
+					padding: 0 33.336rpx;
+					height: 120PX;
+					transition: transform .3s ease-out;
+					transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+					.lyric-item {
+					    overflow: hidden;
+					    margin-bottom: 16PX;
+					    color: rgba(250,250,250,.4);
+					    text-overflow: ellipsis;
+					    white-space: nowrap;
+					    word-break: normal;
+					    font-size: 16PX;
+					    line-height: 1.5;
+					}
+				}
+			    
+			}
+		}
 		
 	
 		

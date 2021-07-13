@@ -18,5 +18,7 @@
 	.Highlight{
 		color: #507DAF;
 	}
-	
+	.focus {
+	    color: #fff;
+	}
 </style>
