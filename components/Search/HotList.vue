@@ -5,7 +5,12 @@
 			热搜榜
 		</view>
 		<view class="hotlist-content">
-			<view class="song-list" v-for="(item, index) of hotlist" :key="index">
+			<view
+				class="song-list"
+				v-for="(item, index) of hotlist"
+				:key="index"
+				@tap="Search(item.searchWord)"
+			>
 				<view class="num" :style="{ color: (index < 3 ? '#FF3A3A' : '#999999') }" >{{ index + 1 }}</view>
 				<view class="song">
 					<view class="song-details">
@@ -60,7 +65,8 @@
 			showHistory() {
 				return this.searchHistory.length !== 0
 			}
-		}
+		},
+		inject: ["Search"]
 	}
 </script>
 
@@ -83,7 +89,7 @@
 					font-weight: bold;
 				}
 				.song{
-					width: 100%;
+					width: 70%;
 					.song-details{
 						width: 100%;
 						display: flex;
@@ -100,10 +106,6 @@
 							margin-left: 10rpx;
 							display: flex;
 							align-items: center;
-							image{
-								// width: 54rpx;
-								// height: 28rpx;
-							}
 							.icon0{
 								display: none;
 							}
@@ -121,6 +123,9 @@
 					.song-content {
 						font-size:26rpx;
 						color: #999999;
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
 					}
 					
 				}
