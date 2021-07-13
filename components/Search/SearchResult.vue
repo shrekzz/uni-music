@@ -1,6 +1,11 @@
 <template>
 	<view class="result-wrapper">
-		<view class="result-list" v-for="(item, index) of searchResult.resultList" :key="index">
+		<view
+			class="result-list"
+			v-for="(item, index) of searchResult.resultList"
+			:key="index"
+			@click="toSong(item.id, item.name)"
+		>
 			<view class="song">
 				<view class="song-name" v-html="keywordHignlight(item.name)"></view>
 				<view class="song-details">
@@ -67,6 +72,12 @@
 						}
 				}
 	
+			},
+			toSong(id, name) {
+				uni.navigateTo({
+					url:"../../pages/Song/Song?id="+ id + "&name="+ name,
+					animationType: "pop-in"
+				})
 			}
 		}
 	}

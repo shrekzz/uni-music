@@ -15,6 +15,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/Song/Song",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "black",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -5,6 +5,8 @@ import store from "store/index.js";
 
 Vue.config.productionTip = false
 Vue.prototype.$MyRequest = myRequest;
+// 初始化音频组件
+Vue.prototype.$innerAudioContext = uni.createInnerAudioContext();
 
 App.mpType = 'app'
 
