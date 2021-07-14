@@ -5,6 +5,7 @@
 			v-for="(item, index) of searchResult.resultList"
 			:key="index"
 			@click="toSong(item.id, item.name)"
+			v-if="resLen"
 		>
 			<view class="song">
 				<view class="song-name" v-html="keywordHignlight(item.name)"></view>
@@ -18,6 +19,9 @@
 			<view class="play-btn">
 				
 			</view>
+		</view>
+		<view class="no-result" v-show="!resLen">
+			暂无搜索结果
 		</view>
 	</view>
 </template>
@@ -38,6 +42,9 @@
 					return item.replace(key, "<span class='Highlight'>" + key + "</span>")
 				}
 			},
+			resLen() {
+				return this.searchResult.resultList !== undefined
+			}
 		},
 		methods: {
 			getAr(ar) {
@@ -123,6 +130,12 @@
 				background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzJweCIgaGVpZ2h0PSI3MnB4IiB2aWV3Qm94PSIwIDAgNzIgNzIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDU1LjEgKDc4MTM2KSAtIGh0dHBzOi8vc2tldGNoYXBwLmNvbSAtLT4KICAgIDx0aXRsZT5Hcm91cCAxODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIG9wYWNpdHk9IjAuMjAwMDAwMDAzIj4KICAgICAgICA8ZyBpZD0i5pCc57SiX+e7k+aenCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTk2MC4wMDAwMDAsIC00NTEuMDAwMDAwKSIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjMiPgogICAgICAgICAgICA8ZyBpZD0iR3JvdXAtMi1Db3B5LTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAzOTcuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAtMTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk2MC4wMDAwMDAsIDU0LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwtNCIgY3g9IjM2IiBjeT0iMzYiIHI9IjM0LjUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNy4xNjExNjkzLDI3LjE5MDY5ODkgTDI2LjM5NTgwODIsNDQuNDE1Mjc2NSBDMjUuODUyMjEyNyw0NS4yODUwMjk0IDI1Ljk3NTkyMyw0NS41MDc5ODkzIDI3LjAwNTc2NjEsNDUuNTA3OTg5MyBMNDkuMDA3MjE2NSw0NS41MDc5ODkzIEM1MC4wNDA1ODM3LDQ1LjUwNzk4OTMgNTAuMTYyNjI1OCw0NS4yODc5OTg5IDQ5LjYxNzE3NDQsNDQuNDE1Mjc2NSBMMzguODUxODEzMywyNy4xOTA2OTg5IEMzOC4yNzA4OTY2LDI2LjI2MTIzMjEgMzcuNzQyMjM2MSwyNi4yNjA5OTIgMzcuMTYxMTY5MywyNy4xOTA2OTg5IFoiIGlkPSJUcmlhbmdsZS0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzOC4wMDcyNDAsIDM2LjAwMDc0OSkgcm90YXRlKDkwLjAwMDAwMCkgdHJhbnNsYXRlKC0zOC4wMDcyNDAsIC0zNi4wMDA3NDkpICI+PC9wYXRoPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=);
 			}
 		}
-		
+		.no-result {
+			height: 125.01rpx;
+			color: #999;
+			text-align: center;
+			font-size: 32.6415rpx;
+			line-height: 125.01rpx;
+		}
 	}
 </style>

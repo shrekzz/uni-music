@@ -1,5 +1,5 @@
 <template>
-	<view class="mask">
+	<view>
 		<scroll-view
 			class="scroll-view"
 			scroll-y="true"
@@ -11,6 +11,9 @@
 				</view>
 			</view>
 		</scroll-view>
+		<view class="mask">
+			
+		</view>
 	</view>
 </template>
 
@@ -62,31 +65,36 @@
 </script>
 
 <style lang="scss" scoped>
-	.mask {
-		.scroll-view {
-			position: relative;
-			height: 120px;
-			//padding: 0 33.336rpx;
-			transition: transform .3s ease-out;
-			transition: transform .3s ease-out,-webkit-transform .3s ease-out;
-			padding-top: 62.505rpx;
-			padding-bottom: 83.34rpx;
-			text-align: center;
-			font-size: 29.169rpx;
-			.lyric-content {
-				padding: 0 33.336rpx;
-				.lyric-item {
-					overflow: hidden;
-					margin-bottom: 16PX;
-					color: rgba(250,250,250,.4);
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					word-break: normal;
-					font-size: 16PX;
-					line-height: 1.5;
-				}  
-			}
+	.scroll-view {
+		position: relative;
+		height: 120px;
+		//padding: 0 33.336rpx;
+		transition: transform .3s ease-out;
+		transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+		padding-top: 62.505rpx;
+		padding-bottom: 83.34rpx;
+		text-align: center;
+		font-size: 29.169rpx;
+		.lyric-content {
+			padding: 0 33.336rpx;
+			.lyric-item {
+				overflow: hidden;
+				margin-bottom: 16PX;
+				color: rgba(250,250,250,.4);
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				word-break: normal;
+				font-size: 16PX;
+				line-height: 1.5;
+			}  
 		}
 	}
+	.mask {
+		height: 120px;
+		position: fixed;
+		width: 100%;
+		margin-top: -156px;
+	}
+
 	
 </style>
