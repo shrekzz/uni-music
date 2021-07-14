@@ -24,42 +24,30 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.search.data-v-7a642ec3 {
+.mask .scroll-view.data-v-20bb1008 {
   position: relative;
-  margin: 15rpx 0 30rpx 0;
+  height: 120px;
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+  padding-top: 62.505rpx;
+  padding-bottom: 83.34rpx;
+  text-align: center;
+  font-size: 29.169rpx;
 }
-.search .search-icon.data-v-7a642ec3 {
-  position: absolute;
-  left: 24rpx;
-  top: 18.4rpx;
-  color: #999999;
-  font-size: 34rpx;
+.mask .scroll-view .lyric-content.data-v-20bb1008 {
+  padding: 0 33.336rpx;
 }
-.search .search-input.data-v-7a642ec3 {
-  color: #000;
-  font-size: 30rpx;
-  padding-left: 80rpx;
-  border-radius: 80rpx;
-  background: #F7F7F7;
-  height: 70rpx;
-}
-.search .search-tips.data-v-7a642ec3 {
-  color: #507DAF;
-  margin: 44rpx 20rpx 44rpx 22rpx;
-}
-.search .search-result.data-v-7a642ec3 {
-  font-size: 34rpx;
-}
-.search .search-result .search-result-list.data-v-7a642ec3 {
-  padding: 22rpx;
-  margin: 20rpx 0;
-  color: #666666;
-}
-.search .search-result .search-result-list .res-icon.data-v-7a642ec3 {
-  color: #999999;
-  font-size: 34rpx;
-}
-.search .search-result .search-result-list .res-song.data-v-7a642ec3 {
-  margin-left: 20rpx;
+.mask .scroll-view .lyric-content .lyric-item.data-v-20bb1008 {
+  overflow: hidden;
+  margin-bottom: 16PX;
+  color: rgba(250, 250, 250, 0.4);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: normal;
+  font-size: 16PX;
+  line-height: 1.5;
 }
 

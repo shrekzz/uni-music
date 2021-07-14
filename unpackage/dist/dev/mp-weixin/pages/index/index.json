@@ -3,6 +3,6 @@
   "usingComponents": {
     "top-list": "/components/TopList",
     "user": "/components/User",
-    "search": "/components/Search"
+    "search-box": "/components/Search/SearchBox"
   }
 }

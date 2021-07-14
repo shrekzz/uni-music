@@ -13,25 +13,18 @@
 			<image class="vinyl-bottom" src="../../static/images/vinyl.png" ></image>
 		</view>
 		
-		<view class="scroll-view" >
-			<view  class="lyrics-main">
-				<view class="lyrics-scroll"  >
-					<view class="lyric-wrap" ref="lyrics">
-						<view v-for="item in showLrc" class="lyric-item" v-html="item"></view>
-					</view>
-				</view>
-			</view>
-		</view>
 		<!-- 播放按钮 -->
 		<view class="" @tap="palyMusic()">
 			<view class="play-btn-play" v-if="play"></view>
 			<view class="play-btn-pause" v-else ></view>
 		</view>
-		
+		<!--  歌词同步滚动 -->
+		<lyrics-view :lrc="lrc" :showLrc="showLrc"></lyrics-view>
 	</view>
 </template>
 
 <script>
+	import LyricsView from "../../components/Song/LyricsView.vue";
 	export default {
 		data() {
 			return {
@@ -41,13 +34,17 @@
 				picUrl: "",
 				// 播放状态
 				play: true,
-				// 歌词
+				// 歌词以及时间线
 				lrc: [],
+				// 歌词
 				showLrc: [],
 				// 歌曲地址
 				url: "",
 				lineNo: 0
 			}
+		},
+		components: {
+			LyricsView
 		},
 		methods: {
 			getSong() {
@@ -119,8 +116,9 @@
 				this.$innerAudioContext.onEnded(() => {
 					this.play = false;
 					this.lineNo = 0;
+					this.$refs.lyrics.$el.scrollTop = 0;
 				})
-				this.lyricScroll();
+				// this.lyricScroll();
 			},
 			// 播放/暂停音乐
 			palyMusic() {
@@ -163,18 +161,7 @@
 						this.lineNo++;
 						
 					}
-				})
-				
-				// let start = 3;
-				// for(let i=1;i<100;i++) {
-				// 	setTimeout(() => {
-				// 		start++;
-				// 		this.showLrc = this.lrc.slice(start-3,start);
-				// 		//console.log(this.showLrc)
-						
-				// 	},1000*i)
-				// }
-				
+				})			
 			}
 			
 		},
@@ -260,44 +247,8 @@
 			animation: circling 20s infinite linear;
 		}
 	}
-	.scroll-view {
-		position: relative;
-		overflow-x: hidden;
-		overflow-y: auto;
-		.lyrics-main {
-			box-sizing: border-box;
-			padding-top: 62.505rpx;
-			padding-bottom: 83.34rpx;
-			text-align: center;
-			font-size: 29.169rpx;
-			.lyrics-scroll {
-				position: relative;
-				height: 120PX;
-				color: #fff;
-				.lyric-wrap {
-					overflow: auto;
-					padding: 0 33.336rpx;
-					height: 120PX;
-					transition: transform .3s ease-out;
-					transition: transform .3s ease-out,-webkit-transform .3s ease-out;
-					.lyric-item {
-					    overflow: hidden;
-					    margin-bottom: 16PX;
-					    color: rgba(250,250,250,.4);
-					    text-overflow: ellipsis;
-					    white-space: nowrap;
-					    word-break: normal;
-					    font-size: 16PX;
-					    line-height: 1.5;
-					}
-				}
-			    
-			}
-		}
-		
 	
-		
-	}
+	
 	@mixin play-btn {
 		position: absolute;
 		background-size: 104.175rpx 104.175rpx;

@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/SearchPage/SearchPage"
+    "pages/SearchPage/SearchPage",
+    "pages/Song/Song"
   ],
   "subPackages": [],
   "window": {

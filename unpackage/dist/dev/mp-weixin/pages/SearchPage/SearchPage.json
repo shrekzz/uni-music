@@ -2,6 +2,9 @@
   "navigationBarTitleText": "搜索",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "search": "/components/Search"
+    "search-box": "/components/Search/SearchBox",
+    "match-list": "/components/Search/MatchList",
+    "hot-list": "/components/Search/HotList",
+    "search-result": "/components/Search/SearchResult"
   }
 }
