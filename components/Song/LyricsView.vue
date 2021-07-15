@@ -21,8 +21,9 @@
 	export default {
 		name: "LyricsView",
 		props: {
-			// 歌词
+			// 歌词源文件
 			lrc: Array,
+			// 纯歌词
 			showLrc: Array
 		},
 		data() {
@@ -30,35 +31,56 @@
 				scrollTop: 0,
 				lineNo: 0,
 				// 歌词
-				Lrc: this.$props.showLrc
+				Lrc: this.showLrc
+			}
+		},
+		watch: {
+			lrc(newVal) {
+				if(newVal.length !== 0) {
+					this.lyricScroll()
+				}
 			}
 		},
 		mounted() {
-			this.lyricScroll()
+			
+			
 		},
 		methods: {
+			// 歌词滚动
 			lyricScroll() {
+				let lrcLen = this.lrc.length
 				this.$innerAudioContext.onTimeUpdate(() => {
-					let lineNo = this.lineNo
-					if(lineNo==this.lrc.length)
-						return;
-					var curTime = this.$innerAudioContext.currentTime; //播放器时间
-					if(this.lrc[lineNo].t<=curTime){
-						this.$set(this.Lrc, lineNo, "<div class='focus'>"+this.Lrc[lineNo] +"</div>")
-						console.log(this.Lrc[lineNo])
-						if(lineNo>0) {
-							 //console.log(this.$refs.lyrics.$el)
-							// 正则去掉样式
-							let pre = this.Lrc[lineNo-1].replace(/<\/?.+?\/?>/g,"")
-							this.$set(this.Lrc, lineNo-1, pre)
+					if(this.lineNo !== lrcLen) {
+						let lineNo = this.lineNo
+						var curTime = this.$innerAudioContext.currentTime; //播放器时间
+						if(this.lrc[lineNo].t<=curTime){
+							this.$set(this.Lrc, lineNo, "<div class='focus'>"+this.Lrc[lineNo] +"</div>")
+							if(lineNo>0) {
+								// 正则去掉样式
+								// let pre = this.Lrc[lineNo-1].replace(/<\/?.+?\/?>/g,"")
+								// this.$set(this.Lrc, lineNo-1, pre)
+								this.clearClass(lineNo - 1)
+							}
+							if(lineNo > 1 ) {
+								this.scrollTop += 40
+							}
+						
+							this.lineNo++;
 						}
-						if(lineNo > 1) {
-							this.scrollTop += 40
-						}
-											
-						this.lineNo++;
 					}
-				})			
+					
+				})
+				// 歌曲自然播放结束事件
+				this.$innerAudioContext.onEnded(() => {
+					// 最后一行歌词去掉样式
+					this.clearClass(this.Lrc.length - 1);
+					this.lineNo = 0;
+					this.scrollTop = 0;
+				})
+			},
+			clearClass(index) {
+				let pre = this.Lrc[index].replace(/<\/?.+?\/?>/g,"");
+				this.$set(this.Lrc, index, pre);
 			}
 		}
 	}

@@ -9,8 +9,8 @@
 		</view>
 		<!-- 中间轮盘 -->
 		<view class="vinyl-turntable">
-			<image class="vinyl-mask" :src="picUrl" ></image>
-			<image class="vinyl-bottom" src="../../static/images/vinyl.png" ></image>
+			<image class="vinyl-mask" :src="picUrl" :class="{pause: !play}" ></image>
+			<image class="vinyl-bottom" src="../../static/images/vinyl.png" :class="{pause: !play}" ></image>
 		</view>
 		
 		<!-- 播放按钮 -->
@@ -19,7 +19,7 @@
 			<view class="play-btn-pause" v-else ></view>
 		</view>
 		<!--  歌词同步滚动 -->
-		<lyrics-view :lrc="lrc" :showLrc="showLrc"></lyrics-view>
+		<lyrics-view :lrc="lrc" :showLrc="showLrc" ></lyrics-view>
 	</view>
 </template>
 
@@ -40,7 +40,6 @@
 				showLrc: [],
 				// 歌曲地址
 				url: "",
-				lineNo: 0
 			}
 		},
 		components: {
@@ -69,6 +68,10 @@
 				}).then(
 					res => {
 						// 歌词格式化
+						if(res.data.uncollected) {
+							this.showLrc.push("<div class='focus'>暂无歌词，求歌词</div>");
+							return
+						}
 						let handleLrc = []
 						let lrc = res.data.lrc.lyric.split("\n");
 						lrc.forEach(item => {
@@ -76,14 +79,12 @@
 								let lrcTime = /\[(.+?)\]/g.exec(item)[1].split(":")
 								lrcTime = Number(lrcTime[0])*60+Number(lrcTime[1]);
 								// 去掉时间 eg:[01:23.33]
-								let word = /(?<=]).*/.exec(item)[0]
+								let word = /(?<=]).*/.exec(item)[0];
 								// 空歌词不要
 								if(word.length !== 0) {
-									handleLrc.push({t: lrcTime, w: word })
+									handleLrc.push({t: lrcTime, w: word });
 									this.showLrc.push(word);
-								}
-								
-								
+								}	
 							}
 						})
 						this.lrc = handleLrc;
@@ -110,15 +111,10 @@
 				this.$innerAudioContext.onPlay(() => {
 				  console.log('开始播放');
 				});
-				// this.$innerAudioContext.onTimeUpdate(() => {
-				// 	console.log(this.$innerAudioContext.currentTime)
-				// })
+				// 歌曲自然播放停止事件
 				this.$innerAudioContext.onEnded(() => {
-					this.play = false;
-					this.lineNo = 0;
-					this.$refs.lyrics.$el.scrollTop = 0;
+					this.play = false;	
 				})
-				// this.lyricScroll();
 			},
 			// 播放/暂停音乐
 			palyMusic() {
@@ -131,39 +127,6 @@
 				}
 				this.play = !this.play;
 			},
-			// 歌词滚动
-			lyricScroll() {
-				this.$innerAudioContext.onTimeUpdate(() => {
-					let lineNo = this.lineNo
-					if(lineNo==this.lrc.length)
-						return;
-					var curTime = this.$innerAudioContext.currentTime; //播放器时间
-					if(this.lrc[lineNo].t<=curTime){
-						// this.showLrc = [this.lrc[lineNo-1]?this.lrc[lineNo-1].w:"",this.lrc[lineNo].w,this.lrc[lineNo+1].w]\
-						// set 方法才能监听到数组变化
-						this.$set(this.showLrc, lineNo, "<div class='focus'>"+this.showLrc[lineNo] +"</div>")
-						
-						if(lineNo>0) {
-							 //console.log(this.$refs.lyrics.$el)
-							// 正则去掉样式
-							let pre = this.showLrc[lineNo-1].replace(/<\/?.+?\/?>/g,"")
-							this.$set(this.showLrc, lineNo-1, pre)
-						}
-						if(lineNo > 1) {
-							this.$nextTick(() => {
-								this.$refs.lyrics.$el.scrollTop+=40
-								console.log(this.$refs.lyrics.$el.scrollTop)
-							})
-						}
-						
-						
-						
-						this.lineNo++;
-						
-					}
-				})			
-			}
-			
 		},
 		onLoad(data) {
 			uni.setNavigationBarTitle({
@@ -245,6 +208,10 @@
 		}
 		.vinyl-bottom, .vinyl-mask {
 			animation: circling 20s infinite linear;
+		}
+		
+		.pause {
+			animation-play-state: paused;
 		}
 	}
 	
