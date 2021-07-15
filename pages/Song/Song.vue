@@ -162,7 +162,8 @@
 	    }
 	}
 	.t{
-		background-color: rgba(0,0,0,.5);
+		// background-color: rgba(0,0,0,.5);
+		background-color: #161824;
 	}
 	.vinyl-head {
 		position: relative;
