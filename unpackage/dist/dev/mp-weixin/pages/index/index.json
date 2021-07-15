@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "网易云音乐",
-  "usingComponents": {
-    "top-list": "/components/TopList",
-    "user": "/components/User",
-    "search-box": "/components/Search/SearchBox"
-  }
-}

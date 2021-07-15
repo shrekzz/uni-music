@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "lyrics-view": "/components/Song/LyricsView"
-  }
-}

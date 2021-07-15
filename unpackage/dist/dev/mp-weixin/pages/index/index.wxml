@@ -1,1 +1,0 @@
-<view class="index-wrapper"><user vue-id="8dd740cc-1" bind:__l="__l"></user><view data-event-opts="{{[['tap',[['toSearch',['$event']]]]]}}" bindtap="__e"><search-box vue-id="8dd740cc-2" bind:__l="__l"></search-box></view><top-list vue-id="8dd740cc-3" list="{{toplist}}" bind:__l="__l"></top-list></view>
