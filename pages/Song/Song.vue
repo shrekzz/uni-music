@@ -2,9 +2,7 @@
 	<view class="t">
 		<!-- 标题&针 -->
 		<view class="vinyl-head">
-			<view class="logo">
-				
-			</view>
+			<view class="logo"></view>
 			<image class="vinyl-neddle" src="../../static/images/needle.png" ></image>
 		</view>
 		<!-- 中间轮盘 -->
@@ -20,11 +18,17 @@
 		</view>
 		<!--  歌词同步滚动 -->
 		<lyrics-view :lrc="lrc" :showLrc="showLrc" ></lyrics-view>
+		<!-- 相似音乐 -->
+		<simi-song :simi="simi" ></simi-song>
+		<!-- 评论 -->
+		<comment :comments="comments" ></comment>
 	</view>
 </template>
 
 <script>
 	import LyricsView from "../../components/Song/LyricsView.vue";
+	import SimiSong from "../../components/Song/SimiSong/SimiSong.vue";
+	import Comment from "../../components/Song/Comment/Comment.vue";
 	export default {
 		data() {
 			return {
@@ -40,12 +44,19 @@
 				showLrc: [],
 				// 歌曲地址
 				url: "",
+				// 相似音乐
+				simi: [],
+				// 评论
+				comments: []
 			}
 		},
 		components: {
-			LyricsView
+			LyricsView,
+			SimiSong,
+			Comment
 		},
 		methods: {
+			// 根据id取音乐、歌词
 			getSong() {
 				this.$MyRequest({
 					url: "/song/detail",
@@ -74,6 +85,7 @@
 						}
 						let handleLrc = []
 						let lrc = res.data.lrc.lyric.split("\n");
+						this.showLrc = [];
 						lrc.forEach(item => {
 							if(item) {
 								let lrcTime = /\[(.+?)\]/g.exec(item)[1].split(":")
@@ -103,6 +115,8 @@
 						this.initMusic();
 					}
 				);
+				this.getSimi();
+				this.getComment();
 			},
 			// 初始化音乐
 			initMusic() {
@@ -127,17 +141,61 @@
 				}
 				this.play = !this.play;
 			},
+			// 相似音乐
+			getSimi() {
+				this.$MyRequest({
+					url: "/simi/song",
+					data: {
+						id: this.id
+					}
+				}).then(
+					res => {
+						if( res.data) {
+							// console.log(res.data)
+							this.simi = res.data.songs
+						}
+					}
+				);
+			},
+			getComment() {
+				this.$MyRequest({
+					url: "/comment/music",
+					data: {
+						id: this.id
+					}
+				}).then(
+					res => {
+						if( res.data) {
+							// console.log(res.data)
+							this.comments = res.data.hotComments
+						}
+					}
+				);
+			},
+			changeSong(id, name) {
+				uni.setNavigationBarTitle({
+					title: name
+				})
+				this.id = id;
+				this.getSong();
+			},
 		},
 		onLoad(data) {
 			uni.setNavigationBarTitle({
 				title: data.name
 			})
-
 			this.id = data.id;
-			this.getSong()
-			
-			
-		}
+			this.getSong();
+		},
+		provide() {
+			// 注入search方法
+			let _this = this
+			return {
+				changeSong(id, name) {
+					_this.changeSong(id, name)
+				}
+			}
+		},
 	}
 </script>
 

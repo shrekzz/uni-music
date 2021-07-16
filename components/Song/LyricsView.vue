@@ -32,6 +32,14 @@
 				if (newVal.length !== 0) {
 					this.lyricScroll();
 				}
+			},
+			// 监听歌词，变了行数 位置清零
+			showLrc(newVal, oldVal) {
+				if(newVal !== oldVal) {
+					this.Lrc = newVal;
+					this.lineNo = 0;
+					this.scrollTop = 0;
+				}
 			}
 		},
 		methods: {
@@ -39,10 +47,10 @@
 			lyricScroll() {
 				let lrcLen = this.lrc.length
 				this.$innerAudioContext.onTimeUpdate(() => {
-					if (this.lineNo !== lrcLen) {
+					if (this.lineNo < lrcLen) {
 						let lineNo = this.lineNo
 						var curTime = this.$innerAudioContext.currentTime; //播放器时间
-						if (this.lrc[lineNo].t <= curTime) {
+						if (this.lrc[lineNo].t !== undefined && this.lrc[lineNo].t <= curTime) {
 							this.$set(this.Lrc, lineNo, "<div class='focus'>" + this.Lrc[lineNo] + "</div>");
 							if (lineNo > 0) {
 								// 正则去掉样式
@@ -103,8 +111,8 @@
 
 	.mask {
 		height: 120px;
-		position: fixed;
+		position: absolute;
 		width: 100%;
-		margin-top: -156px;
+		margin-top: -166px;
 	}
 </style>
