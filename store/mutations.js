@@ -6,6 +6,9 @@ export default {
 	},
 	showLoading(state, flag) {
 		state.loading = flag;
+	},
+	changePlaylist(state, song) {
+		state.playlist = [...song];
 	}
 	
 }

@@ -29,6 +29,7 @@
 	import LyricsView from "../../components/Song/LyricsView.vue";
 	import SimiSong from "../../components/Song/SimiSong/SimiSong.vue";
 	import Comment from "../../components/Song/Comment/Comment.vue";
+	import { mapState, mapMutations } from "vuex";
 	export default {
 		data() {
 			return {
@@ -56,6 +57,7 @@
 			Comment
 		},
 		methods: {
+			...mapMutations(["changePlaylist"]),
 			// 根据id取音乐、歌词
 			getSong() {
 				this.$MyRequest({
@@ -172,6 +174,7 @@
 					}
 				);
 			},
+			// 换歌
 			changeSong(id, name) {
 				uni.setNavigationBarTitle({
 					title: name

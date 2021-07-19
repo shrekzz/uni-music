@@ -1,4 +1,6 @@
 export default {
 	searchHistory: ["abc"],
-	loading: false
+	loading: false,
+	// 播放列表
+	playlist: []
 }

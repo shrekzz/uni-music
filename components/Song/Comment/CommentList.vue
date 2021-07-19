@@ -6,7 +6,7 @@
 		</view>
 		<view class="comment-info">
 			<view class="nick-name">{{ list.user.nickname }}
-					<!-- <image class="{{iconStyle}}" lazyLoad="{{true}}" src="{{vipIcon}}" wx:if="{{iconStyle&&vipIcon}}"></image> -->
+					<!-- <image class="{{iconStyle}}" lazyLoad="{{true}}" src="{{vipIcon}}" v:if="{{iconStyle&&vipIcon}}"></image> -->
 			</view>
 			<text class="time">{{ time }}</text>
 			<view class="content">
