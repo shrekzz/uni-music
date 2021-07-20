@@ -64,10 +64,18 @@
 			.content-title {
 			    display: block;
 			    font-size: 31.2525rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				word-break: normal;
 			}
 			.content-main {
 			    color: rgba(255,255,255,.6);
 			    font-size: 22.9185rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				word-break: normal;
 				.sq-tag {
 					width: 25.002rpx;
 					height: 16.668rpx;

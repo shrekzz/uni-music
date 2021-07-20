@@ -169,7 +169,7 @@
 					res => {
 						if( res.data) {
 							// console.log(res.data)
-							this.comments = res.data.hotComments
+							this.comments = res.data.hotComments.slice(0,10)
 						}
 					}
 				);

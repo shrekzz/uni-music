@@ -2,18 +2,18 @@
 	<view class="comment-item">
 		<view class="avatar" >
 			<image class="avatar-img" lazyLoad="true" :src="list.user.avatarUrl"></image>
-			<text ></text>
+			<view  :class="iconStyle(list.user.userType)"></view>
 		</view>
 		<view class="comment-info">
 			<view class="nick-name">{{ list.user.nickname }}
 					<!-- <image class="{{iconStyle}}" lazyLoad="{{true}}" src="{{vipIcon}}" v:if="{{iconStyle&&vipIcon}}"></image> -->
 			</view>
 			<text class="time">{{ time }}</text>
-			<view class="content">
+			<view class="content" >
 				<!-- <replied-comment compid="{{$compid__58}}" wx:if="{{beReplied&&beReplied.length>0}}"></replied-comment> -->
 				
 					<!-- <image class="cmt_emoji" lazyLoad="true" src="{{'https:'+list[$original].content}}" wx:if="{{item[$original].type==='image'}}"></image> -->
-					<text wx:else>{{list.content}}</text>
+					<text>{{list.content}}</text>
 				
 			</view>
 			<view class="zan">
@@ -37,6 +37,18 @@
 		computed: {
 			time() {
 				return  moment(this.list.time).format('ll'); 
+			},
+			
+		},
+		methods: {
+			iconStyle(userType) {
+				if(userType == 0) {
+					return "";
+				}else if(userType == 4) {
+					return "ava-icon yyr"
+				}else if(userType == 200) {
+					return "ava-icon daren"
+				}
 			}
 		}
 	}
@@ -65,7 +77,7 @@
 			    bottom: 0;
 			    width: 29.8635rpx;
 			    height: 29.8635rpx;
-			    background-image: url(https://p4.music.126.net/l0FkWHfIqLav4I1oYHIyVQ==/19013854579518977.jpg);
+			    background-image: url("https://p4.music.126.net/l0FkWHfIqLav4I1oYHIyVQ==/19013854579518977.jpg");
 			    background-size: 166.68rpx auto;
 			    background-repeat: no-repeat;
 			}
