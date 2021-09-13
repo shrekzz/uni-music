@@ -68,7 +68,6 @@
 				}).then(
 					res => {
 						let songInfo = res.data.songs[0].al;
-						console.log(res.data.songs[0].al);
 						this.picUrl = songInfo.picUrl;
 					}
 				);
@@ -102,7 +101,6 @@
 							}
 						})
 						this.lrc = handleLrc;
-						console.log(handleLrc)
 					}
 				);
 				// 获取url
@@ -169,7 +167,7 @@
 					res => {
 						if( res.data) {
 							// console.log(res.data)
-							this.comments = res.data.hotComments.slice(0,10)
+							this.comments = res.data.hotComments.length >= 10 ? res.data.hotComments.slice(0,10) : res.data.hotComments;
 						}
 					}
 				);

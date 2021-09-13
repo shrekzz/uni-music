@@ -1,10 +1,13 @@
 <template>
-	<view class="index-wrapper">
-		<user />
-		<view @click="toSearch">
-			<search-box />
+	<view>
+		<Skeleton v-if="showSkeleton" />
+		<view v-else class="index-wrapper">
+			<user />
+			<view @click="toSearch">
+				<search-box />
+			</view>
+			<top-list :list="toplist" />
 		</view>
-		<top-list :list="toplist" />
 	</view>
 </template>
 
@@ -14,13 +17,15 @@
 	} from "../../api.js";
 	import TopList from "../../components/TopList";
 	import User from "../../components/User";
-	import SearchBox from "../../components/Search/SearchBox"
+	import SearchBox from "../../components/Search/SearchBox";
+	import Skeleton from "../../components/Skeleton/Skeleton"
 
 	export default {
 		components: {
 			TopList,
 			User,
-			SearchBox
+			SearchBox,
+			Skeleton
 		},
 		data() {
 			return {
@@ -33,7 +38,6 @@
 			}).then(res => {
 				const list = res.data.list.slice(0, 4)
 				this.toplist = list
-				console.log(list)
 			})
 		},
 		methods: {
@@ -42,6 +46,11 @@
 					url: "../SearchPage/SearchPage",
 					animationType: "pop-in"
 				})
+			}
+		},
+		computed: {
+			showSkeleton() {
+				return this.toplist.length === 0
 			}
 		}
 	}

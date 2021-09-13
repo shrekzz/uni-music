@@ -5,8 +5,19 @@
 			"style": {
 				"navigationBarTitleText": "网易云音乐"
 			}
-		}
-	    ,{
+		},
+		{
+		    "path" : "pages/Playlist/Playlist",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "歌单",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"rgba(0,0,0,0)",
+				"navigationBarTextStyle":"white"
+		    }
+		    
+		},
+		{
             "path" : "pages/SearchPage/SearchPage",
             "style" :                                                                                    
             {
@@ -14,8 +25,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/Song/Song",
             "style" :                                                                                    
             {

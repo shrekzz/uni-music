@@ -1,15 +1,12 @@
 <template>
 	<view>
-		<view class="list" v-for="item of list">
-			<view class="coverImg">
-				<view class="updated">{{ item.updateFrequency }}</view>
-				<image class="img" :src="item.coverImgUrl" mode="widthFix">
-
-				</image>
-
+		<view class="toplist" v-for="item of list" @click="toPlaylist(item.id)" :key="item.id" >
+			<view class="left">
+				<image class="cover" :src="item.coverImgUrl" ></image>
+				<text class="text">{{ item.updateFrequency }}</text>
 			</view>
-			<view class="tracks">
-				<view v-for="(track, index) of item.tracks" class="track-text">
+			<view class="right">
+				<view class="song" v-for="(track, index) of item.tracks" :key="index">
 					{{ index+1 }}.{{ track.first }} - {{ track.second}}
 				</view>
 			</view>
@@ -27,45 +24,55 @@
 		},
 		props: {
 			list: Array
+		},
+		methods:{
+			toPlaylist(id) {
+				uni.navigateTo({
+					url: `../Playlist/Playlist?id=${id}`,
+					animationType: "pop-in"
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.list {
-		margin: 20rpx 0;
+	.toplist {
+		display: -ms-flexbox;
 		display: flex;
-
-		.coverImg {
-			position: relative;
-
-			.updated {
-				z-index: 2;
-				color: white;
-				position: absolute;
-				left: 10rpx;
-				bottom: 18rpx;
-				font-size: 28rpx;
+	    margin-bottom: 20.835rpx;
+	    color: #fff;
+	    font-size: 21.5295rpx;
+		.left {
+		    position: relative;
+			.cover {
+			    width: 213.906rpx;
+			    height: 213.906rpx;
+			    border-radius: 8.334rpx;
+			}
+			.text {
+			    position: absolute;
+			    bottom: 13.1955rpx;
+			    left: 12.501rpx;
 			}
 
-			image {
-				border-radius: 6px;
-				width: 210rpx;
-			}
 		}
-
-		.tracks {
-			overflow: hidden;
-			display: flex;
-			justify-content: space-between;
+		.right {
+		    display: -ms-flexbox;
+		    display: flex;
 			flex-direction: column;
-			padding: 20rpx;
-
-			.track-text {
-				color: #666666;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
+			margin: 25.002rpx 0 24.3075rpx 20.835rpx;
+			width: 415.311rpx;
+			color: #666;
+			font-size: 27.0855rpx;
+			.song {
+			    overflow: hidden;
+			    margin-bottom: 31.947rpx;
+			    text-overflow: ellipsis;
+			    white-space: nowrap;
+				&:last-child {
+					margin-bottom: 0;
+				}
 			}
 		}
 	}

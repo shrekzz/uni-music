@@ -5,8 +5,9 @@
 			<view  :class="iconStyle(list.user.userType)"></view>
 		</view>
 		<view class="comment-info">
-			<view class="nick-name">{{ list.user.nickname }}
-					<!-- <image class="{{iconStyle}}" lazyLoad="{{true}}" src="{{vipIcon}}" v:if="{{iconStyle&&vipIcon}}"></image> -->
+			<view class="nick-name">
+				{{ list.user.nickname }}
+				<image class="vip-package" :class="vipIcon(list.user.vipRights)" :src="vipImage(list.user.vipRights)"></image>
 			</view>
 			<text class="time">{{ time }}</text>
 			<view class="content" >
@@ -18,7 +19,7 @@
 			</view>
 			<view class="zan">
 				<button class="zan-btn" hover-class='none'>
-					<text class="zan-count">{{ list.likedCount }}</text>
+					<text class="zan-count">{{ list.likedCount > 9999 ? (list.likedCount/1000).toFixed(1)+"万" : list.likedCount }}</text>
 					<image class="zan-img" lazyLoad="true" ></image>
 				</button>
 			</view>
@@ -41,6 +42,7 @@
 			
 		},
 		methods: {
+			// 用户图标类型判断
 			iconStyle(userType) {
 				if(userType == 0) {
 					return "";
@@ -48,6 +50,20 @@
 					return "ava-icon yyr"
 				}else if(userType == 200) {
 					return "ava-icon daren"
+				}else if(userType == 10) {
+					return "ava-icon v"
+				}
+			},
+			// vip样式：年费&普通
+			vipIcon(vipRights) {
+				if(vipRights && vipRights.associator.rights) {
+					return vipRights.redVipAnnualCount > 0 ? "vip-annualfee" : "vip-package"
+				}
+			},
+			// vip图片：年费&普通
+			vipImage(vipRights) {
+				if(vipRights) {
+					return vipRights.redVipAnnualCount > 0 ? "https://p1.music.126.net/y4OeNm5rXOfqWF4f8VuhUw==/109951163703946326.png" : "https://p1.music.126.net/OeOahPin96CFyHmEnH2grA==/109951163446555771.png"	
 				}
 			}
 		}

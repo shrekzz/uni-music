@@ -12,6 +12,7 @@
 				class="list"
 				v-for="(item, index) of searchHistory"
 				@click="Search(item)"
+				:key="index"
 			>
 				{{ item }}
 			</view>
