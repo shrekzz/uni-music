@@ -43,7 +43,7 @@
 				}
 			},
 			resLen() {
-				return this.searchResult.resultList !== undefined
+				return this.paylist !== undefined
 			}
 		},
 		methods: {

@@ -7,12 +7,13 @@
 			@click="toSong(item.id, item.name)"
 			v-if="resLen"
 		>
+		     <view class="order" v-if="type == 'toplist'">{{index+1}}</view>
 			<view class="song">
 				<view class="song-name" v-html="keywordHignlight(item.name)"></view>
 				<view class="song-details">
-					<view class=""  v-html="iconTag(item.fee?item.fee:item.privilege.fee,'vip')"></view>
-					<view class="" v-if="item.privilege" v-html="iconTag(item.privilege.flag,'cr')"></view>
-					<view class="" v-if="item.privilege" v-html="iconTag(item.privilege.maxbr, 'sq')"></view>
+					<view class=""  v-html="iconTag(item.privilege.fee,'vip')"></view>
+					<view class="" v-html="iconTag(item.privilege.flag,'cr')"></view>
+					<view class="" v-html="iconTag(item.privilege.maxbr, 'sq')"></view>
 					<view class="artist" v-html="keywordHignlight(getAr(item.ar)+' - '+item.al.name)"></view>
 				</view>
 			</view>
@@ -33,7 +34,8 @@
 			searchResult: {
 				keyword: String,
 				resultList: Array
-			}
+			},
+			type: String
 		},
 		computed: {
 			keywordHignlight(keyword) {

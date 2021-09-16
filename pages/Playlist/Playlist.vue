@@ -6,7 +6,7 @@
 		</view>
 		<!-- <view style="{{anonymousState__temp2}}"></view> -->
 		<view class="header-wrap">
-			<p-header :descriptions="playlist"  />
+			<p-header :descriptions="playlist" />
 		</view>
 		<!-- <view class="btn-list">
 			<view class="btn-wrap" wx:if="{{canWakeApp}}">
@@ -32,7 +32,7 @@
 					<text class="title">播放全部</text>
 					<text class="info">(共{{ playlist.trackCount }}首)</text>
 				</view>
-				<search-result :searchResult="tracks"></search-result>
+				<search-result :searchResult="tracks" type="toplist" ></search-result>
 				<!-- <play-list compid="{{$compid__93}}"></play-list> -->
 			<!-- </view> -->
 			<!-- <view class="no-song" v-else>暂无歌曲</view> -->
@@ -69,9 +69,14 @@
 				this.coverImgUrl = res.data.playlist.coverImgUrl
 				this.playlist = res.data.playlist
 				this.creator = res.data.creator
+				const privileges = res.data.privileges
+				const resultList = res.data.playlist.tracks
+				privileges.forEach((item, index) => {
+					resultList[index].privilege = item
+				})
 				this.tracks = { 
 					keywords: "", 
-					resultList: res.data.playlist.tracks,
+					resultList
 				}
 			})
 			uni.setBack
