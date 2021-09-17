@@ -12,7 +12,7 @@
 		/>
 		<hot-list v-show="showHot" />
 		<search-result
-			v-show="showResult"
+			v-if="showResult"
 			:searchResult="searchResult"
 		></search-result>
 		<view class="loading" v-show="loading"></view>

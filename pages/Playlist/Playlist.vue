@@ -5,43 +5,30 @@
 			<view class="playlist-bg-mask"></view>
 		</view>
 		<!-- <view style="{{anonymousState__temp2}}"></view> -->
-		<view class="header-wrap">
-			<p-header :descriptions="playlist" />
-		</view>
-		<!-- <view class="btn-list">
-			<view class="btn-wrap" wx:if="{{canWakeApp}}">
-				<button class="btn" openType="share" plain="{{true}}">
-					<image class="btn-icon" src="{{share}}"></image>
-					<text>分享</text>
-				</button>
-				<button appParameter="{{orpheus}}" bindtap="anonymousFunc0" class="btn" openType="launchApp" plain="{{true}}">
-					<image class="btn-icon" src="{{subscribe}}"></image>
-					<text>收藏</text>
-					<text>{{anonymousState__temp4}}</text>
-				</button>
+		<scroll-view scroll-y="true" lower-threshold="150" show-scrollbar="false">
+			<view class="header-wrap">
+				<p-header :descriptions="playlist" />
 			</view>
-			<button class="btn" openType="share" plain="{{true}}" wx:else>
-				<image class="btn-icon" src="{{share}}"></image>
-				<text class="btn-msg">分享给微信好友</text>
-			</button>
-		</view> -->
-		<view class="playlist-wrap" >
-			<!-- <view> -->
-				<view @click="anonymousFunc1" class="list-item">
-					<image class="play-icon" :src="playIconAll"></image>
-					<text class="title">播放全部</text>
-					<text class="info">(共{{ playlist.trackCount }}首)</text>
-				</view>
-				<search-result :searchResult="tracks" type="toplist" ></search-result>
-				<!-- <play-list compid="{{$compid__93}}"></play-list> -->
-			<!-- </view> -->
-			<!-- <view class="no-song" v-else>暂无歌曲</view> -->
-		</view>
+			<view class="playlist-wrap" >
+				<!-- <view> -->
+					<view @click="anonymousFunc1" class="list-item">
+						<image class="play-icon" :src="playIconAll"></image>
+						<text class="title">播放全部</text>
+						<text class="info">(共{{ playlist.trackCount }}首)</text>
+					</view>
+					<p-list :searchResult="tracks" type="toplist" ></p-list>
+					<!-- <play-list compid="{{$compid__93}}"></play-list> -->
+				<!-- </view> -->
+				<!-- <view class="no-song" v-else>暂无歌曲</view> -->
+			</view>
+		</scroll-view>
+		
 	</view>
 </template>
 
 <script>
 	import PHeader from "../../components/Playlist/PHeader"
+	import PList from "../../components/Playlist/PList"
 	import SearchResult from "../../components/Search/SearchResult.vue"
 	export default {
 		name: "Palylist",
@@ -56,6 +43,7 @@
 		},
 		components: {
 			PHeader,
+			PList,
 			SearchResult
 		},
 		onLoad(params) {
