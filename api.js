@@ -8,12 +8,12 @@ export const myRequest =(options) =>{
 			data:options.data || {},//传递参数：传入的参数或者默认传递空集合
 			success:(res)=> {
 				//返回的数据（不固定，看后端接口，这里是做了一个判断，如果不为true，用uni.showToast方法提示获取数据失败)
-				if(res.data.code != 200){
-					return uni.showToast({
-						title:'获取数据失败',
-						icon:'none'
-					})
-				}
+				// if(res.data.code != 200){
+				// 	return uni.showToast({
+				// 		title:'获取数据失败',
+				// 		icon:'none'
+				// 	})
+				// }
 				// 如果不满足上述判断就输出数据
 				resolve(res)
 			},

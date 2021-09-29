@@ -20,7 +20,7 @@
 		<lyrics-view :lrc="lrc" :showLrc="showLrc" ></lyrics-view>
 		<!-- 相似音乐 -->
 		<simi-song :simi="simi" ></simi-song>
-		<!-- 评论 -->
+		<!-- 评论组件 -->
 		<comment :comments="comments" ></comment>
 	</view>
 </template>

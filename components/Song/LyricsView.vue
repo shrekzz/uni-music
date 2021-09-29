@@ -47,10 +47,10 @@
 			lyricScroll() {
 				let lrcLen = this.lrc.length
 				this.$innerAudioContext.onTimeUpdate(() => {
-					if (this.lineNo < lrcLen) {
+					if (this.lineNo < lrcLen ) {
 						let lineNo = this.lineNo
 						var curTime = this.$innerAudioContext.currentTime; //播放器时间
-						if (this.lrc[lineNo].t !== undefined && this.lrc[lineNo].t <= curTime) {
+						if (this.lrc[lineNo].t <= curTime && this.lrc[lineNo].t!= undefined) {
 							this.$set(this.Lrc, lineNo, "<div class='focus'>" + this.Lrc[lineNo] + "</div>");
 							if (lineNo > 0) {
 								// 正则去掉样式
