@@ -1,28 +1,30 @@
 <template>
 	<view>
-		<view class="playlist-bg">
-			<image class="playlist-bg-img" :src="coverImgUrl"></image>
-			<view class="playlist-bg-mask"></view>
+		<playlist v-if="playlist.length === 0" />
+		<view v-else>
+			<view class="playlist-bg">
+				<image class="playlist-bg-img" :src="coverImgUrl"></image>
+				<view class="playlist-bg-mask"></view>
+			</view>
+			<!-- <view style="{{anonymousState__temp2}}"></view> -->
+			<scroll-view scroll-y="true" lower-threshold="150" show-scrollbar="false">
+				<view class="header-wrap">
+					<p-header :descriptions="playlist" />
+				</view>
+				<view class="playlist-wrap" >
+					<!-- <view> -->
+						<view @click="anonymousFunc1" class="list-item">
+							<image class="play-icon" :src="playIconAll"></image>
+							<text class="title">播放全部</text>
+							<text class="info">(共{{ playlist.trackCount }}首)</text>
+						</view>
+						<p-list :searchResult="tracks" type="toplist" ></p-list>
+						<!-- <play-list compid="{{$compid__93}}"></play-list> -->
+					<!-- </view> -->
+					<!-- <view class="no-song" v-else>暂无歌曲</view> -->
+				</view>
+			</scroll-view>
 		</view>
-		<!-- <view style="{{anonymousState__temp2}}"></view> -->
-		<scroll-view scroll-y="true" lower-threshold="150" show-scrollbar="false">
-			<view class="header-wrap">
-				<p-header :descriptions="playlist" />
-			</view>
-			<view class="playlist-wrap" >
-				<!-- <view> -->
-					<view @click="anonymousFunc1" class="list-item">
-						<image class="play-icon" :src="playIconAll"></image>
-						<text class="title">播放全部</text>
-						<text class="info">(共{{ playlist.trackCount }}首)</text>
-					</view>
-					<p-list :searchResult="tracks" type="toplist" ></p-list>
-					<!-- <play-list compid="{{$compid__93}}"></play-list> -->
-				<!-- </view> -->
-				<!-- <view class="no-song" v-else>暂无歌曲</view> -->
-			</view>
-		</scroll-view>
-		
 	</view>
 </template>
 
@@ -30,6 +32,7 @@
 	import PHeader from "../../components/Playlist/PHeader"
 	import PList from "../../components/Playlist/PList"
 	import SearchResult from "../../components/Search/SearchResult.vue"
+	import playlist from "../../components/Skeleton/playlist/index.vue"
 	export default {
 		name: "Palylist",
 		data() {
@@ -44,7 +47,8 @@
 		components: {
 			PHeader,
 			PList,
-			SearchResult
+			SearchResult,
+			playlist
 		},
 		onLoad(params) {
 			this.$MyRequest({

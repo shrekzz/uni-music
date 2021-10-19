@@ -4,7 +4,7 @@
 			<view class="">
 				历史记录
 			</view>
-			<view class="delete-icon" @click="deleteHis">
+			<view class="delete-icon" @click="deleteHistory">
 			</view>
 		</view>
 		<view class="content">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import { mapState } from "vuex";
+	import { mapState,  mapMutations } from "vuex";
 	export default {
 		name:"HistoryList",
 		props: {
@@ -33,9 +33,7 @@
 			};
 		},
 		methods: {
-			deleteHis() {
-				this.$emit("deleteHis");
-			}
+			...mapMutations(["deleteHistory"]),
 		},
 		computed: {
 			...mapState(["searchHistory"])

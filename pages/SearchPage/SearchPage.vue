@@ -10,7 +10,7 @@
 			:keywords="keywords"
 			@search="search"
 		/>
-		<hot-list v-show="showHot" />
+		<hot-list v-show="showHot " />
 		<search-result
 			v-if="showResult"
 			:searchResult="searchResult"
@@ -103,6 +103,12 @@
 						this.showLoading(false);
 					}
 				);
+			},
+			// 历史记录判断
+			historyFlag() {
+				if(this.searchHistory.length !== 0) {
+					this.showHot = true
+				}
 			}
 		},
 		components:{
@@ -112,7 +118,7 @@
 			SearchResult
 		},
 		computed: {
-			...mapState(["loading"])
+			...mapState(["loading","searchHistory"]),
 		},
 		watch: {
 			keywords(newValue,oldValue) {
@@ -153,6 +159,9 @@
 				this.page++;
 				this.search(this.keywords);
 			}
+		},
+		onLoad() {
+			this.historyFlag()
 		}
 	}
 </script>

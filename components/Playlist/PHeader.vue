@@ -14,7 +14,7 @@
 	                <image class="avatar-img" :src="descriptions.creator.avatarUrl"></image>{{descriptions.creator.nickname}}</view>
 	            <view class="content-description">
 	                <view @click="navToDescriptionModal" class="context" v-if="descriptions.description">{{descriptions.description}}
-	                     <image class="arrow" id="arrow" :src="arrow"></image>
+	                     <image class="arrow" id="arrow" :src="arrow" :style="descriptions.description.length-34 < 0 ? { position: 'none', right: 0, bottom: 0 } : { position: 'absolute' } " ></image>
 	                </view>
 	                <text v-else>暂无简介</text>
 	            </view>
@@ -124,7 +124,7 @@
 					    -webkit-line-clamp: 2;
 					}
 					.arrow {
-						position: absolute;
+						
 					    right: -18.057rpx;
 					    bottom: 4.167rpx;
 					    margin-left: 4.8615rpx;
