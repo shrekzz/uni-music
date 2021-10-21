@@ -10,9 +10,10 @@
 		    "path" : "pages/Playlist/Playlist",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "歌单",
-		        "enablePullDownRefresh": false,
+				"navigationStyle": "custom",
 				"navigationBarBackgroundColor":"rgba(0,0,0,0)",
+		       
+		        "enablePullDownRefresh": false,
 				"navigationBarTextStyle":"white"
 		    }
 		    

@@ -52,7 +52,8 @@
 			keywordHignlight(keyword) {
 				return (item) => {
 					let key = this.searchResult.keyword
-					return item.replace(key, "<span class='Highlight'>" + key + "</span>")
+					let ellipsis = item.length >=35 ? item.slice(0,35)+"..." : item
+					return ellipsis.replace(key, "<span class='Highlight'>" + key + "</span>")
 				}
 			},
 			resLen() {
@@ -137,17 +138,21 @@
 				    line-height: 1.5;
 				}
 				 .info {
+					 display: flex;
+					 align-items: center;
 				    color: #999;
 				    font-size: 22.9185rpx;
+
 					.tag-icon {
 					    margin-right: 6.2505rpx;
 					    width: 31.2525rpx;
 					    height: 18.7515rpx;
 					}
 					.artist {
+						display: inline-block;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						// white-space: nowrap;
+						white-space: nowrap;
 						word-break: normal;
 					}
 					

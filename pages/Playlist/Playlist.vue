@@ -1,5 +1,22 @@
 <template>
 	<view>
+		<!-- 沉浸式占位 -->
+		<view class="status_bar"></view>
+		<view class="navBar">
+			<view class="uni-page-head-hd">
+				<view class="uni-page-head-btn">
+					<i @click="back" class="uni-btn-icon" style="color: rgb(255, 255, 255); font-size: 27px;"></i>
+				</view>
+			</view>
+			<view class="uni-page-head-bd">
+				<view class="uni-page-head__title">
+					歌单
+				</view>
+			</view>
+			<view class="uni-page-head-ft"></view>
+		</view>
+		<!-- 占位 -->
+		<view class="temp"></view>
 		<playlist v-if="playlist.length === 0" />
 		<view v-else>
 			<view class="playlist-bg">
@@ -7,19 +24,19 @@
 				<view class="playlist-bg-mask"></view>
 			</view>
 			<!-- <view style="{{anonymousState__temp2}}"></view> -->
-			<scroll-view scroll-y="true" lower-threshold="150" show-scrollbar="false">
+			<scroll-view class="scroll-y" scroll-y="false" lower-threshold="150" show-scrollbar="false">
 				<view class="header-wrap">
 					<p-header :descriptions="playlist" />
 				</view>
-				<view class="playlist-wrap" >
+				<view class="playlist-wrap">
 					<!-- <view> -->
-						<view @click="anonymousFunc1" class="list-item">
-							<image class="play-icon" :src="playIconAll"></image>
-							<text class="title">播放全部</text>
-							<text class="info">(共{{ playlist.trackCount }}首)</text>
-						</view>
-						<p-list :searchResult="tracks" type="toplist" ></p-list>
-						<!-- <play-list compid="{{$compid__93}}"></play-list> -->
+					<view class="list-item">
+						<image class="play-icon" :src="playIconAll"></image>
+						<text class="title">播放全部</text>
+						<text class="info">(共{{ playlist.trackCount }}首)</text>
+					</view>
+					<p-list :searchResult="tracks" type="toplist"></p-list>
+					<!-- <play-list compid="{{$compid__93}}"></play-list> -->
 					<!-- </view> -->
 					<!-- <view class="no-song" v-else>暂无歌曲</view> -->
 				</view>
@@ -66,20 +83,105 @@
 				privileges.forEach((item, index) => {
 					resultList[index].privilege = item
 				})
-				this.tracks = { 
-					keywords: "", 
+				this.tracks = {
+					keywords: "",
 					resultList
 				}
 			})
-			uni.setBack
+		},
+		methods: {
+			back() {
+				uni.navigateBack({
+					animationType: "pop-out",
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	// page{
-	// 	background: url("https://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg");
-	// }
+	page {
+		background: transparent;
+	}
+
+	.navBar {
+		position: fixed;
+		left: var(--window-left);
+		right: var(--window-right);
+		height: 44px;
+		height: calc(44px + constant(safe-area-inset-top));
+		height: calc(44px + env(safe-area-inset-top));
+		padding: 7px 3px;
+		padding-top: calc(7px + constant(safe-area-inset-top));
+		padding-top: calc(7px + env(safe-area-inset-top));
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		overflow: hidden;
+		-webkit-box-pack: justify;
+		-webkit-justify-content: space-between;
+		justify-content: space-between;
+		box-sizing: border-box;
+		z-index: 998;
+		color: #fff;
+		background-color: rgba(0, 0, 0, 0);
+		-webkit-transition-property: all;
+		transition-property: all;
+
+		.uni-page-head-hd {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+			font-size: 16px;
+
+			.uni-page-head-btn {
+				position: relative;
+				width: auto;
+				margin: 0 2px;
+				word-break: keep-all;
+				white-space: pre;
+				cursor: pointer;
+			}
+		}
+
+		.uni-page-head-bd {
+			text-align: center;
+			position: absolute;
+			left: 70px;
+			right: 70px;
+			min-width: 0;
+			-webkit-user-select: auto;
+			user-select: auto;
+
+			.uni-page-head__title {
+				font-weight: 700;
+				font-size: 16px;
+				line-height: 30px;
+				text-align: center;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+
+
+	}
+
+	.status_bar {
+		height: var(--status-bar-height);
+		width: 100%;
+	}
+
+	.temp {
+		width: 100%;
+		height: 44px;
+		height: calc(44px + constant(safe-area-inset-top));
+		height: calc(44px + env(safe-area-inset-top));
+	}
+
 	.playlist-bg {
 		position: fixed;
 		top: 0;
@@ -107,33 +209,42 @@
 		}
 
 	}
+
+	.scroll-y {
+		height: 100vh;
+	}
+
 	.playlist-wrap {
 		overflow: hidden;
 		width: 100%;
 		border-radius: 41.67rpx;
 		background-color: #fff;
+
 		.list-item {
 			display: -ms-flexbox;
 			display: flex;
-		    position: relative;
-		    -ms-flex-align: center;
-		    align-items: center;
-		    padding: 31.2525rpx 33.336rpx;
-		    color: #333;
+			position: relative;
+			-ms-flex-align: center;
+			align-items: center;
+			padding: 31.2525rpx 33.336rpx;
+			color: #333;
+
 			.play-icon {
-			    margin-right: 29.169rpx;
-			    width: 41.67rpx;
-			    height: 41.67rpx;
+				margin-right: 29.169rpx;
+				width: 41.67rpx;
+				height: 41.67rpx;
 			}
+
 			.title {
-			    margin-right: 7.6395rpx;
-			    font-size: 33.336rpx;
+				margin-right: 7.6395rpx;
+				font-size: 33.336rpx;
 			}
-			 .info {
-			    color: rgba(0,0,0,.3);
-			    font-size: 27.0855rpx;
+
+			.info {
+				color: rgba(0, 0, 0, .3);
+				font-size: 27.0855rpx;
 			}
 		}
-	
+
 	}
 </style>

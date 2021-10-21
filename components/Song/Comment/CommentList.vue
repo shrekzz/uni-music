@@ -2,12 +2,12 @@
 	<view class="comment-item">
 		<view class="avatar" >
 			<image class="avatar-img" lazyLoad="true" :src="list.user.avatarUrl"></image>
-			<view  :class="iconStyle(list.user.userType)"></view>
+			<!-- <view  :class="iconStyle(list.user.userType)"></view> -->
 		</view>
 		<view class="comment-info">
 			<view class="nick-name">
 				{{ list.user.nickname }}
-				<image class="vip-package" :class="vipIcon(list.user.vipRights)" :src="vipImage(list.user.vipRights)"></image>
+				<!-- <image class="vip-package" :class="vipIcon(list.user.vipRights)" :src="vipImage(list.user.vipRights)"></image> -->
 			</view>
 			<text class="time">{{ time }}</text>
 			<view class="content" >
